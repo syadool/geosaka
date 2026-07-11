@@ -1,0 +1,9 @@
+export const ROUND_COUNT = 5;
+export type Coordinate = { lat: number; lng: number };
+export type Difficulty = "easy" | "normal" | "hard";
+export type PhotoCredit = { author: string; licenseName: string; sourceUrl: string };
+export type SpotData = { id: string; nameJa: string; latitude: number; longitude: number; photoUrl: string; photoAlt: string; credit: PhotoCredit; descriptionJa: string; difficulty: Difficulty };
+export type Scene = { id: string; location: Coordinate; display: { kind: "photo"; imageUrl: string; alt: string }; reveal: { nameJa: string; descriptionJa: string; credit: PhotoCredit }; difficulty: Difficulty };
+export type RoundResult = { roundNumber: number; scene: Scene; guess: Coordinate; answer: Coordinate; distanceKm: number; score: number };
+export type GamePhase = "title" | "round" | "roundResult" | "finalResult" | "fatalError";
+export type GameState = { phase: GamePhase; roundIndex: number; scenes: Scene[]; candidatePool: Scene[]; failedIds: string[]; currentGuess: Coordinate | null; results: RoundResult[]; error: string | null };

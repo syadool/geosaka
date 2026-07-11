@@ -1,0 +1,2 @@
+import type { SpotData } from "../game/types";
+export const validateSpot = (spot: SpotData): boolean => Boolean(spot.id && spot.nameJa && spot.photoUrl.startsWith("https://commons.wikimedia.org/wiki/Special:FilePath/") && spot.credit.author && spot.credit.licenseName && spot.credit.sourceUrl && Number.isFinite(spot.latitude) && Number.isFinite(spot.longitude) && Math.abs(spot.latitude) <= 90 && Math.abs(spot.longitude) <= 180);

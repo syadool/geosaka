@@ -1,0 +1,4 @@
+import type { RoundResult } from "../game/types";
+import { formatDistance } from "../utils/formatDistance";
+import { getTotalScore } from "../scoring/score";
+export function FinalResultScreen({ results, onRestart }: { results: RoundResult[]; onRestart: () => void }) { const total = getTotalScore(results); return <main className="final-screen"><p className="eyebrow">THE OSAKA NIGHT IS YOURS</p><h1>GAME<br /><em>OVER</em></h1><div className="final-total"><span>TOTAL SCORE</span><strong>{total.toLocaleString()}</strong><b>/ 25,000</b></div><div className="breakdown">{results.map((result) => <div key={result.scene.id}><span>0{result.roundNumber}</span><b>{result.scene.reveal.nameJa}</b><em>{formatDistance(result.distanceKm)}</em><strong>{result.score.toLocaleString()}</strong></div>)}</div><button className="primary-button" onClick={onRestart}>もう一度、大阪を歩く <b>↻</b></button></main>; }
