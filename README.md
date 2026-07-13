@@ -31,3 +31,9 @@ npx vitest run
 ## 開発上の構成
 
 Leaflet は `GuessMap` / `ResultMap` コンポーネントで直接扱います。地図の生成・破棄と、マーカー／線の更新は別の `useEffect` としており、ピン更新だけで地図インスタンスを作り直しません。ゲームの状態遷移は `useReducer`、距離・採点・抽選は UI 非依存の純粋関数です。
+
+## Google Maps モード
+
+`VITE_GOOGLE_MAPS_API_KEY` を設定したビルドでは、Maps JavaScript API の Street View と Google Maps の推測・結果地図を使用します。未設定のビルドは従来の写真出題（Leaflet + OpenStreetMap）にフォールバックします。API キーは HTTP リファラー制限と Maps JavaScript API 制限を設定した公開キーとして扱ってください。
+
+大阪府の出題範囲は、国土交通省の [国土数値情報 行政区域データ（N03）](https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-2025.html) を加工した簡略化境界データを同梱しています。出典表記は「国土数値情報（行政区域データ）（国土交通省）を加工して作成」です。

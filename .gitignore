@@ -3,3 +3,6 @@ dist/
 .npm-cache/
 *.tsbuildinfo
 .smoke/
+.env
+.env.*
+!.env.example
