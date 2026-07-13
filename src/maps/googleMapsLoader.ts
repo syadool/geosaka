@@ -20,7 +20,7 @@ export function loadGoogleMaps(apiKey: string): Promise<GoogleMapsApi> {
   loadedKey = normalizedKey;
   loaderPromise = Promise.resolve()
     .then(() => {
-      setOptions({ apiKey: normalizedKey, ...GOOGLE_MAPS_OPTIONS });
+      setOptions({ key: normalizedKey, ...GOOGLE_MAPS_OPTIONS });
       return Promise.all([importLibrary("maps"), importLibrary("streetView")]);
     })
     .then(() => {

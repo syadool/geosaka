@@ -48,6 +48,18 @@ describe("StreetViewSceneProvider", () => {
     expect(scenes[0]?.display).toMatchObject({ kind: "streetview", panoId: "pano-b" });
   });
 
+  it("keeps searching when the first twenty candidates have no panorama", async () => {
+    const unavailableCount = 20;
+    const googleMaps = createGoogle(
+      [...Array(unavailableCount).fill("ZERO_RESULTS"), "OK"],
+      [...Array(unavailableCount).fill(null), panorama("pano-after-dry-run", { lat: 34.7, lng: 135.5 })] as GoogleStreetViewPanoramaData[],
+    );
+
+    const scenes = await new StreetViewSceneProvider({ googleMaps, boundary, sceneCount: 1, random: () => 0.5 }).getAvailableScenes();
+
+    expect(scenes[0]?.display).toMatchObject({ kind: "streetview", panoId: "pano-after-dry-run" });
+  });
+
   it("does not reuse panorama ids within one pool", async () => {
     const googleMaps = createGoogle(
       ["OK", "OK", "OK"],

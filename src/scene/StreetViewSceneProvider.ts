@@ -8,7 +8,7 @@ import type { SceneProvider } from "./types";
 
 export const REPLACEMENT_RESERVE = 3;
 export const SCENE_POOL_SIZE = 5 + REPLACEMENT_RESERVE;
-export const MAX_ATTEMPTS_PER_SCENE = 20;
+export const ATTEMPTS_PER_REQUESTED_SCENE = 40;
 
 type StreetViewSceneProviderOptions = {
   googleMaps: GoogleMapsApi;
@@ -47,21 +47,9 @@ export class StreetViewSceneProvider implements SceneProvider {
     const scenes: Scene[] = [];
     const usedPanos = new Set<string>();
     const usedCoordinates = new Set<string>();
+    const maxAttempts = this.sceneCount * ATTEMPTS_PER_REQUESTED_SCENE;
 
-    for (let index = 0; index < this.sceneCount; index += 1) {
-      scenes.push(await this.createScene(searchClient, bounds, usedPanos, usedCoordinates, index));
-    }
-    return scenes;
-  }
-
-  private async createScene(
-    searchClient: ReturnType<typeof createStreetViewSearchClient>,
-    bounds: ReturnType<typeof getBounds>,
-    usedPanos: Set<string>,
-    usedCoordinates: Set<string>,
-    sequence: number,
-  ): Promise<Scene> {
-    for (let attempt = 0; attempt < MAX_ATTEMPTS_PER_SCENE; attempt += 1) {
+    for (let attempt = 0; attempt < maxAttempts && scenes.length < this.sceneCount; attempt += 1) {
       const seed = randomCoordinateInBounds(bounds, this.random);
       if (!isPointInMultiPolygon(seed, this.boundary)) continue;
 
@@ -76,18 +64,24 @@ export class StreetViewSceneProvider implements SceneProvider {
 
         usedPanos.add(panoId);
         usedCoordinates.add(key);
-        return {
-          id: `streetview-${sequence + 1}-${panoId}`,
+        scenes.push({
+          id: `streetview-${scenes.length + 1}-${panoId}`,
           location,
           display: { kind: "streetview", panoId, alt: "大阪府内の街並みを見回すストリートビュー" },
           reveal: { nameJa: "大阪府内のランダム地点", descriptionJa: "大阪府境内からランダムに選ばれた地点です。" },
           difficulty: "normal",
-        };
+        });
       } catch (error) {
         if (error instanceof NoPanoramaError || error instanceof TransientStreetViewError) continue;
         throw error;
       }
     }
-    throw new SceneGenerationError("Could not find a Street View panorama within the attempt limit");
+
+    if (scenes.length < this.sceneCount) {
+      throw new SceneGenerationError(
+        `Could only find ${scenes.length} of ${this.sceneCount} Street View panoramas after ${maxAttempts} attempts`,
+      );
+    }
+    return scenes;
   }
 }
