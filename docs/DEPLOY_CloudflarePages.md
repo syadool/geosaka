@@ -1,5 +1,9 @@
 # Cloudflare Pages 公開手順（GitHub 連携）
 
+> 現行の公開方式は Wrangler による Cloudflare Pages Direct Upload です。
+> 本書は過去の GitHub 連携方式の記録であり、新規公開・再デプロイには
+> [DEPLOY_CloudflarePagesCLI.md](DEPLOY_CloudflarePagesCLI.md) を使用してください。
+
 対象リポジトリ: `syadool/geosaka`  
 対象ブランチ: `master`  
 公開方式: Cloudflare Pages 無料枠・GitHub 連携

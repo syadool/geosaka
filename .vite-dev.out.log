@@ -1,0 +1,15 @@
+
+> geosaka@1.0.0 dev
+> vite --host 127.0.0.1 --port 5173
+
+22:54:32 [vite] (client) Re-optimizing dependencies because vite config has changed
+
+  VITE v8.1.4  ready in 415 ms
+
+  ➜  Local:   http://127.0.0.1:5173/
+  ➜  press h + enter to show help
+22:54:33 [vite] (client) [optimizer] scanning dependencies...
+22:54:35 [vite] (client) [optimizer] bundling dependencies...
+1:02:23 [vite] (client) hmr update /src/components/RoundResultScreen.tsx
+1:02:23 [vite] (client) hmr update /src/index.css
+1:02:51 [vite] (client) hmr update /src/index.css
